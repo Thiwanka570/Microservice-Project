@@ -22,7 +22,7 @@ public class InventoryController {
         return new ResponseEntity<>(inventories, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Inventory> getInventoryItemById(@PathVariable("id") Long id){
         Optional<Inventory> inventory=inventoryService.getInventoryItemById(id);
         return inventory.map(
