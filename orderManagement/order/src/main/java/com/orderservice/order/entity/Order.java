@@ -12,6 +12,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "item_id", nullable = false)
+    private Long itemId;
+
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
 
@@ -75,6 +78,14 @@ public class Order {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     // Override toString() method for debugging
