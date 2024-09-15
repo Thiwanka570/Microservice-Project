@@ -6,7 +6,6 @@ import com.orderservice.order.commonHandling.OrderResponce;
 import com.orderservice.order.commonHandling.SuccessOrderResponce;
 import com.orderservice.order.entity.Order;
 import com.orderservice.order.repository.OrderRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,15 +23,15 @@ public class OrderService {
 
     @Autowired
     OrderRepository orderRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
-    public OrderService(WebClient webClient) {
-        this.webClient = webClient;
+    public OrderService(WebClient.Builder webClientBuilder,OrderRepository orderRepository) {
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8004").build();
+        this.orderRepository = orderRepository;
     }
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+
     }
 
     public Optional<Order> findOrderById(Long id) {
@@ -82,7 +81,7 @@ public class OrderService {
 
         try {
             Inventory inventoryResponce = webClient.post()
-                    .uri("http://localhost:8004/api/inventory/")
+                    .uri("/api/inventory")
                     .bodyValue(inventory)
                     .retrieve()
                     .bodyToMono(Inventory.class)
